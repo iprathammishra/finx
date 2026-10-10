@@ -14,7 +14,10 @@
 - Preserve the compact 70% desktop presentation and normal readable sizing on phones.
 
 ## Visual style
-- Use only original monochrome line illustrations like assets/leakage.svg: white background, thin black strokes, simple figures, speech bubbles and concise captions. Plain monochrome explanatory graphs also fit.
-- Do not add stock photos, photographic backgrounds, colorful illustrations or external image collections.
-- Keep expanding the illustration library: add a relevant original sketch to new substantive guides when it clarifies the idea. Avoid repeating the same joke or adding decoration without a teaching purpose.
-- Use accessible SVGs with titles/descriptions and HTML alt text. Label fictional numbers and illustrative scenarios.
+- The signature is thin monochrome linework, generous white space and precise ideas—not a fixed comic template.
+- Design each illustration from the article's concept. Use objects, editorial metaphors, maps, diagrams, graphs, environments or occasional people. Vary composition, scale and rhythm.
+- Do not default to two panels, two people, speech bubbles or an enclosing rectangular frame. Use them only when the idea specifically needs them.
+- An illustration should add a relationship, explanation or memorable insight beyond repeating the adjacent text. Keep embedded wording sparse and legible.
+- Use original accessible SVGs; match HTML alt text and captions to the actual scene. Label fictional numbers and illustrative financial scenarios. Graph geometry must match its numbers.
+- Keep the finx line monogram in assets/finx-mark.svg and the matching wordmark consistent. No stock photographs or colorful decorative imagery.
+- Retain the original backtest comic as one compositional example, not the template for new work.
