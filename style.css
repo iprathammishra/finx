@@ -4,17 +4,20 @@ html{color-scheme:light}body{max-width:1320px;margin:0 auto;padding:26px 24px 60
 /* The requested compact desktop scale; phones keep their normal readable size. */
 @media(min-width:900px){body{zoom:.7;max-width:1600px}}
 
-/* Home is a reading index: one path, one collection of short ideas. */
-.home header{border-bottom:1px solid #ddd;padding-bottom:20px;margin-bottom:28px}
-.home h1 .meta{font-weight:400;margin-left:10px}
-.home-index{display:grid;grid-template-columns:1fr 1fr;gap:80px}
+/* A horizontal reading index, with plain links and no cards. */
+.home header{display:flex;align-items:center;gap:90px;border-bottom:1px solid #ddd;padding-bottom:20px;margin-bottom:30px}
+.home h1{flex:none}.home h1 .meta{font-weight:400;margin-left:10px}
+.home-intro p{margin:5px 0}
+.home-index{display:grid;gap:35px}
 .home-index h2{margin-top:0;font-size:21px}
 .home-index h3{font-size:16px;font-weight:500;margin:0}
-.path-step{margin-top:28px}
+.path-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:42px;margin-top:24px}
 .home-index ul{padding-left:22px}
 .path-step li{margin:9px 0}
 .path-step>p{margin-left:22px}
-.ideas-list li{margin:22px 0}
+.ideas-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px 42px;margin-top:24px}
+.ideas-list li{margin:0}
 .ideas-list p{margin:3px 0}
-.home footer{border-top:1px solid #ddd;padding-top:14px;margin-top:35px}
-@media(max-width:800px){.home-index{grid-template-columns:1fr;gap:32px}}
+.home footer{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;border-top:1px solid #ddd;padding-top:14px;margin-top:35px}
+@media(max-width:800px){.home header{gap:30px}.path-grid,.ideas-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}}
+@media(max-width:520px){.home header{display:block}.path-grid,.ideas-list{grid-template-columns:1fr}.home footer{display:block}}
