@@ -21,3 +21,5 @@ html{color-scheme:light}body{max-width:1320px;margin:0 auto;padding:26px 24px 60
 .home footer{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;border-top:1px solid #ddd;padding-top:14px;margin-top:35px}
 @media(max-width:800px){.home header{gap:30px}.path-grid,.ideas-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}}
 @media(max-width:520px){.home header{display:block}.path-grid,.ideas-list{grid-template-columns:1fr}.home footer{display:block}}
+
+.wide-photo{max-width:1000px}.question{max-width:1000px;padding-bottom:12px;border-bottom:1px solid #ddd}pre{overflow:auto;background:#fafafa;padding:16px}details summary{font-weight:500}details p{max-width:1150px}
