@@ -2,3 +2,5 @@
 node_modules/
 finance-tracker-*.json
 _site/
+
+finx-backup-*.json
