@@ -1,0 +1,57 @@
+name: Publish three branch previews
+on:
+  push:
+    branches: [master, cloud, remote]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: finance-pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout production
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          path: sources/master
+      - name: Checkout cloud preview
+        uses: actions/checkout@v4
+        with:
+          ref: cloud
+          path: sources/cloud
+      - name: Checkout Mac preview
+        uses: actions/checkout@v4
+        with:
+          ref: remote
+          path: sources/remote
+      - name: Assemble static snapshots
+        shell: bash
+        run: |
+          mkdir -p _site/cloud _site/remote
+          for branch in master cloud remote; do
+            destination="_site"
+            if [ "$branch" != "master" ]; then destination="_site/$branch"; fi
+            cp sources/"$branch"/*.html "sources/$branch/style.css" "sources/$branch/app.js" "$destination/"
+            cp -R "sources/$branch/assets" "$destination/assets"
+            test -f "$destination/index.html"
+          done
+          touch _site/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
