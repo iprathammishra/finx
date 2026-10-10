@@ -12,3 +12,9 @@
 
 - The site has no progress tracker or audio/listening feature. Keep reading times and the CFA planner.
 - Preserve the compact 70% desktop presentation and normal readable sizing on phones.
+
+## Visual style
+- Use only original monochrome line illustrations like assets/leakage.svg: white background, thin black strokes, simple figures, speech bubbles and concise captions. Plain monochrome explanatory graphs also fit.
+- Do not add stock photos, photographic backgrounds, colorful illustrations or external image collections.
+- Keep expanding the illustration library: add a relevant original sketch to new substantive guides when it clarifies the idea. Avoid repeating the same joke or adding decoration without a teaching purpose.
+- Use accessible SVGs with titles/descriptions and HTML alt text. Label fictional numbers and illustrative scenarios.
