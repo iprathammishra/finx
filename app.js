@@ -1,54 +1,9 @@
-'use strict';
-const $ = s => document.querySelector(s);
-function element(tag,text){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n}
-if ($('#tracker')) {
-const KEY = 'fin-tracker-v1';
-const milestoneLabels = ['Verify your selected 2027 CFA window and registration deadlines','Complete accounting / valuation foundations','Register and schedule CFA Level I','Finish first syllabus pass','Publish company valuation + decision memo','Publish credit / risk case + presentation','Complete timed mocks and error-log review','Complete PSM and sit Level I','Land finance-facing role with decision exposure','Plan Level II and MBA funding / admissions'];
-const empty = () => ({version:1,milestones:Array(10).fill(false),sessions:[],mocks:[],jobs:[],notes:''});
-let state = empty();
-function validate(s) {
-  if (!s || s.version !== 1 || !Array.isArray(s.milestones) || s.milestones.length !== 10 || !s.milestones.every(x=>typeof x==='boolean') || typeof s.notes !== 'string' || s.notes.length>100000) throw Error('Not a valid tracker backup.');
-  for (const key of ['sessions','mocks','jobs']) if (!Array.isArray(s[key]) || s[key].length>10000) throw Error('Invalid entries.');
-  const str=(x,max=500)=>typeof x==='string' && x.length<=max;
-  const date=x=>str(x,10)&&/^\d{4}-\d{2}-\d{2}$/.test(x);
-  const tracks=['CFA I','Applied finance','Career','CFA II','MBA'];
-  if(!s.sessions.every(x=>x&&date(x.date)&&tracks.includes(x.track)&&Number.isFinite(x.hours)&&x.hours>0&&x.hours<=24&&str(x.note))) throw Error('Invalid study sessions.');
-  if(!s.mocks.every(x=>x&&date(x.date)&&Number.isFinite(x.score)&&x.score>=0&&x.score<=100&&str(x.note))) throw Error('Invalid mock scores.');
-  if(!s.jobs.every(x=>x&&str(x.company)&&str(x.role)&&['Watchlist','Applied','Screen','Interview','Offer','Closed'].includes(x.status)&&str(x.url,2000)&&(!x.url||safeURL(x.url))&&str(x.next))) throw Error('Invalid applications or links.');
-  return {version:1,milestones:s.milestones.slice(),sessions:s.sessions.map(x=>({date:x.date,track:x.track,hours:x.hours,note:x.note})),mocks:s.mocks.map(x=>({date:x.date,score:x.score,note:x.note})),jobs:s.jobs.map(x=>({company:x.company,role:x.role,status:x.status,url:x.url,next:x.next})),notes:s.notes};
+"use strict";
+// Estimate reading time from prose; tables and figures require extra inspection.
+const reading = document.querySelector('#reading-time');
+if (reading) {
+  const copy = document.querySelector('main').cloneNode(true);
+  copy.querySelectorAll('form,.controls,.meta,figure,table').forEach(node => node.remove());
+  const words = copy.textContent.trim().split(/\s+/).length;
+  reading.textContent = `${Math.max(1, Math.ceil(words / 220))} min read`;
 }
-function safeURL(url){try{const u=new URL(url);return ['https:','http:'].includes(u.protocol)}catch{return false}}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(state));$('#storage-status').textContent=''}catch{$('#storage-status').textContent='Browser storage is unavailable or full. Export a backup before closing this page.'}}
-try{const raw=localStorage.getItem(KEY);if(raw)state=validate(JSON.parse(raw))}catch{$('#storage-status').textContent='Saved data could not be loaded. Existing storage has not been overwritten. Import a valid backup or export the current session.'}
-function removeButton(key,i){const b=element('button','Remove');b.type='button';b.setAttribute('aria-label',`Remove ${key} entry ${i+1}`);b.onclick=()=>{state[key].splice(i,1);save();render()};return b}
-function entries(key,target,format){const host=$(target);host.replaceChildren();if(!state[key].length){host.append(element('p','No entries yet.'));return}state[key].forEach((x,i)=>{const row=element('div');row.className='panel';row.append(element('p',format(x)),removeButton(key,i));host.append(row)})}
-function render(){
- $('#milestones').replaceChildren();milestoneLabels.forEach((text,i)=>{const label=element('label');const check=element('input');check.type='checkbox';check.checked=state.milestones[i];check.onchange=()=>{state.milestones[i]=check.checked;save();render()};label.append(check,document.createTextNode(text));$('#milestones').append(label)});
- const done=state.milestones.filter(Boolean).length;$('#milestone-progress').value=done;$('#progress-text').textContent=`${done} / 10 milestones complete`;
- entries('sessions','#sessions',x=>`${x.date} · ${x.track} · ${x.hours} h — ${x.note}`);
- const hours=state.sessions.reduce((a,x)=>a+x.hours,0);const cfa=state.sessions.filter(x=>x.track==='CFA I').reduce((a,x)=>a+x.hours,0);$('#study-total').textContent=`${hours.toFixed(1)} hours total · ${cfa.toFixed(1)} CFA I hours / 350-hour planning target`;
- entries('mocks','#mocks',x=>`${x.date} · ${x.score}% — ${x.note}`);const last=state.mocks.slice().sort((a,b)=>a.date.localeCompare(b.date)).slice(-3);$('#mock-summary').textContent=last.length?`Latest ${last.length} mock average: ${(last.reduce((a,x)=>a+x.score,0)/last.length).toFixed(1)}%. 70% is a personal readiness heuristic, not an official pass mark.`:'Log scores to see your trend.';
- $('#jobs').replaceChildren();if(!state.jobs.length)$('#jobs').append(element('p','No applications yet.'));state.jobs.forEach((x,i)=>{const row=element('div');row.className='panel';row.append(element('p',`${x.company} · ${x.role}`));const sel=element('select');sel.setAttribute('aria-label',`Status for ${x.company} ${x.role}`);['Watchlist','Applied','Screen','Interview','Offer','Closed'].forEach(v=>{const o=element('option',v);o.value=v;o.selected=v===x.status;sel.append(o)});sel.onchange=()=>{x.status=sel.value;save()};row.append(sel);if(safeURL(x.url)){const a=element('a',' Open listing');a.href=x.url;row.append(a)}row.append(element('p',`Next: ${x.next||'Set a next action'}`),removeButton('jobs',i));$('#jobs').append(row)});
- $('#notes').value=state.notes;
-}
-for(const formId of ['study-form','mock-form','job-form'])$('#'+formId).addEventListener('submit',event=>{event.preventDefault();const form=event.target;const data=Object.fromEntries(new FormData(form));if(formId==='study-form'){data.hours=Number(data.hours);state.sessions.push(data)}else if(formId==='mock-form'){data.score=Number(data.score);state.mocks.push(data)}else{if(data.url&&!safeURL(data.url)){ $('#backup-status').textContent='Use an http or https job link.';return}state.jobs.push(data)}save();form.reset();setDates();render()});
-function setDates(){const d=new Date();const today=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');document.querySelectorAll('input[type=date]').forEach(x=>x.value=today)}
-$('#notes').addEventListener('input',e=>{state.notes=e.target.value;save()});
-$('#export').onclick=()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=element('a');const url=URL.createObjectURL(blob);a.href=url;a.download=`finx-backup-${new Date().toISOString().slice(0,10)}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);$('#backup-status').textContent='Backup exported. Keep it private; it includes your notes and applications.'};
-$('#import').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{if(file.size>2000000)throw Error('Backup is too large.');const next=validate(JSON.parse(await file.text()));if(!confirm('Replace this browser’s tracker with this backup? Export first if you want to keep current entries.'))return;state=next;save();render();$('#backup-status').textContent='Backup imported.'}catch(err){$('#backup-status').textContent=err.message}finally{e.target.value=''}};
-$('#reset').onclick=()=>{if(confirm('Reset all tracker entries on this browser? Export a backup first.')){state=empty();save();render();$('#backup-status').textContent='Tracker reset.'}};
-setDates();render();
-}
-// Device voices: prefer enhanced/natural English voices and preserve user choice.
-const synth=window.speechSynthesis;
-let queue=[],speaking=false,paused=false,current=null,generation=0;
-function status(text){if($('#audio-status'))$('#audio-status').textContent=text}
-function preferred(voices){return voices.find(v=>/en/i.test(v.lang)&&/premium|enhanced|natural|siri|neural|online/i.test(v.name))||voices.find(v=>/en/i.test(v.lang)&&/Samantha|Karen|Daniel|Moira|Google UK English Female|Microsoft.*Online/i.test(v.name))||voices.find(v=>v.lang==='en-IN')||voices.find(v=>v.lang.startsWith('en'))||voices[0]}
-function loadVoices(){const select=$('#audio-voice');if(!select||!synth)return;const voices=synth.getVoices();let saved;try{saved=localStorage.getItem('fin-voice')}catch{}const previous=select.value;select.replaceChildren();if(!voices.length){select.append(element('option','Device default'));return}const target=voices.find(v=>v.voiceURI===(previous||saved))||preferred(voices);for(const v of voices.filter(v=>v.lang.startsWith('en')||v===target)){const o=element('option',`${v.name} · ${v.lang}`);o.value=v.voiceURI;o.selected=v===target;select.append(o)}}
-function stop(){generation++;speaking=false;paused=false;queue=[];current=null;if(synth)synth.cancel();status('Stopped.')}
-function next(token){if(token!==generation||!speaking)return;if(paused)return;if(!queue.length){speaking=false;current=null;status('Finished.');return}const chunk=queue.shift();current=new SpeechSynthesisUtterance(chunk);current.rate=Number($('#audio-rate').value);current.pitch=1;const selected=synth.getVoices().find(v=>v.voiceURI===$('#audio-voice').value);if(selected){current.voice=selected;current.lang=selected.lang}else current.lang='en-IN';current.onend=()=>{if(token===generation&&speaking)setTimeout(()=>next(token),180)};current.onerror=e=>{if(token!==generation)return;speaking=false;status('Audio interrupted. Try another voice or an individual article.')};synth.speak(current)}
-function listen(node){if(!synth){status('Text-to-speech is unavailable in this browser.');return}stop();const clone=node.cloneNode(true);clone.querySelectorAll('button,figure,form,input,textarea,select,nav,.meta,.controls,table').forEach(x=>x.remove());const blocks=[...clone.querySelectorAll('h1,h2,h3,p,summary')].map(x=>x.textContent.replace(/\s+/g,' ').trim()).filter(Boolean);queue=blocks.flatMap(text=>typeof Intl.Segmenter==='function'?[...new Intl.Segmenter('en',{granularity:'sentence'}).segment(text)].map(x=>x.segment):[text]).flatMap(sentence=>{const chunks=[];let chunk='';for(const word of sentence.split(/\s+/)){if((chunk+' '+word).length>280&&chunk){chunks.push(chunk);chunk=''}chunk+=(chunk?' ':'')+word}if(chunk)chunks.push(chunk);return chunks});if(!queue.length)return;loadVoices();speaking=true;status('Reading with your selected device voice. Keep this tab open.');next(generation)}
-if($('#listen-all')){try{const rate=localStorage.getItem('finx-rate');if(['0.85','0.95','1.1'].includes(rate))$('#audio-rate').value=rate}catch{}$('#audio-rate').onchange=e=>{try{localStorage.setItem('finx-rate',e.target.value)}catch{}};if(synth){loadVoices();synth.addEventListener('voiceschanged',loadVoices);$('#audio-voice').onchange=e=>{try{localStorage.setItem('fin-voice',e.target.value)}catch{}if(speaking)status('Voice changed; the next sentence uses this voice.')};$('#listen-all').onclick=()=>listen($('main'));$('#pause-audio').onclick=()=>{if(!speaking)return;paused=!paused;if(paused){synth.pause()}else{if(synth.paused)synth.resume();if(!synth.speaking)next(generation)}status(paused?'Paused.':'Reading.')};$('#stop-audio').onclick=stop;document.querySelectorAll('article,main details').forEach(node=>{const b=element('button','▶ Listen');b.type='button';b.className='listen';b.setAttribute('aria-label',`Listen to ${node.querySelector('h3,summary')?.textContent||'article'}`);b.onclick=()=>listen(node);node.append(b)});window.addEventListener('pagehide',stop)}else{document.querySelectorAll('#listen-all,#pause-audio,#stop-audio').forEach(b=>b.disabled=true);status('Text-to-speech is unavailable in this browser.')}}
-
-// Reading times are based on article text, at 220 words per minute.
-const reading=$('#reading-time');if(reading){const copy=$('main').cloneNode(true);copy.querySelectorAll('form,.controls,.meta,figure,table').forEach(x=>x.remove());reading.textContent=`${Math.max(1,Math.ceil(copy.textContent.trim().split(/\s+/).length/220))} min read`;}

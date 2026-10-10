@@ -1,13 +1,11 @@
 # finx
 
-A small field guide to AI × finance: CFA preparation, applied projects, career moves and the decisions behind the models.
+A minimal field guide to AI × finance: CFA preparation, applied projects, career moves and better business decisions.
 
 **[Read finx →](https://iprathammishra.github.io/finx/)**
 
-- Plan for February, May, August or November 2027.
-- Read short guides, inspect simple graphs, or listen with a device voice.
-- Track study, mocks and applications locally; export a backup to move devices.
+Short articles, an adjustable 2027 CFA planner, original sketches and decision graphs. Sources and image credits sit beside the content.
 
 Run locally: `python3 -m http.server 8000`. No build or dependencies.
 
-Work on `master`; fetch and fast-forward before editing. GitHub Pages publishes from `master`. Sources and image credits are beside the content. Salary bands and study budgets are planning estimates.
+All environments use `master`. Fetch and fast-forward before editing; GitHub Pages publishes the site.
