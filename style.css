@@ -3,3 +3,18 @@ html{color-scheme:light}body{max-width:1320px;margin:0 auto;padding:26px 24px 60
 .guide-list{padding-left:22px}.guide-list li{margin:12px 0}.guide-description{margin:2px 0;font-size:13px;color:#555}header p{max-width:900px}
 /* The requested compact desktop scale; phones keep their normal readable size. */
 @media(min-width:900px){body{zoom:.7;max-width:1600px}}
+
+/* Home is a reading index: one path, one collection of short ideas. */
+.home header{border-bottom:1px solid #ddd;padding-bottom:20px;margin-bottom:28px}
+.home h1 .meta{font-weight:400;margin-left:10px}
+.home-index{display:grid;grid-template-columns:1fr 1fr;gap:80px}
+.home-index h2{margin-top:0;font-size:21px}
+.home-index h3{font-size:16px;font-weight:500;margin:0}
+.path-step{margin-top:28px}
+.home-index ul{padding-left:22px}
+.path-step li{margin:9px 0}
+.path-step>p{margin-left:22px}
+.ideas-list li{margin:22px 0}
+.ideas-list p{margin:3px 0}
+.home footer{border-top:1px solid #ddd;padding-top:14px;margin-top:35px}
+@media(max-width:800px){.home-index{grid-template-columns:1fr;gap:32px}}
