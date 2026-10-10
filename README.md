@@ -29,3 +29,5 @@ Listen uses browser speech synthesis and device voices, without an API key. Per-
 Links are in the articles beside their claims. Research date: 10 October 2026. The guide uses 2027 CFA topic weights. August 2027 dates/fees require checking the live official calendar. Job examples establish responsibilities and location, not permanent vacancies. Salary bands are explicitly judgment-based fixed-pay planning estimates, not employer disclosures. MBA / career timelines are recommendations, not admission or job guarantees.
 
 Image: `assets/bull-bear.jpg`, EvaK, “Bulle und Bär Frankfurt”, Wikimedia Commons, CC BY-SA 2.5, unmodified. Source and license are also credited inline.
+
+Additional photos: `cat-laptop.jpg`, Emna Mizouni, CC BY-SA 4.0 (unmodified); `trading-floor.jpg`, Thomas J. O’Halloran, Library of Congress / U.S. News & World Report collection, public domain. Full source and license links appear beside each photo. Inline SVG decision graphs use illustrative values, not market data.

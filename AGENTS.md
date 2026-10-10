@@ -21,9 +21,12 @@
 - Shared workflow / guardrail changes must be reconciled across all three branches. Do not alter deployment rules casually.
 
 ## Content and implementation
-- Keep the site minimal, static and accessible. Preserve the fixed white theme, Apple system fonts, wide content and home page of article links; do not collapse it into a single long page. Relative asset URLs must work under all three paths.
+- Keep the site minimal, static and accessible. Preserve the fixed white theme, Apple system fonts, wide content, 15px body text, default browser link styling, and home page of plain article-link lists; do not collapse it into a single long page. Relative asset URLs must work under all three paths.
 - Use primary sources for CFA rules, admissions, research and job responsibilities. Recheck changing facts. Label salary planning bands as estimates, separate fixed pay / CTC / bonus, and never invent company salary disclosures.
 - Keep articles short, preserve source links and image attribution, and keep finance-facing business decisions central to the career plan.
 - User-entered tracker data stays browser-local. Render it with textContent, validate imports and permit only http/https links. Do not commit personal backups or credentials.
 - Verify syntax, tracker persistence/import/export, responsive rendering and audio behavior for meaningful changes.
 - Commits: `<type>: <subject>` with no scope or co-author tag. Git identity: Pratham Mishra / mishrapratham.codeit@gmail.com.
+
+## Browser verification
+- Always use Firefox for browser computer use. Do not switch to Safari or another browser.
