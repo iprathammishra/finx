@@ -21,3 +21,8 @@
 - Use original accessible SVGs; match HTML alt text and captions to the actual scene. Label fictional numbers and illustrative financial scenarios. Graph geometry must match its numbers.
 - Keep the finx line monogram in assets/finx-mark.svg and the matching wordmark consistent. No stock photographs or colorful decorative imagery.
 - Retain the original backtest comic as one compositional example, not the template for new work.
+
+- Match diagram form to the question: workflow for project review, sequence for evidence handoffs, timeline for publication cutoffs, and explicit yes/no/unknown outcomes for decisions.
+- Dense diagrams must stay readable in the 70% desktop view and on phones. Use the keyboard-accessible diagram-scroll region when shrinking would hide labels; prevent page-wide overflow.
+- Distinguish illustrative scenario points from a fitted curve or an optimum. Declare unscaled timelines, cutoff meanings and uncertainty branches. Keep stable participants/relationships in SVG metadata when useful.
+- Validate and render changed SVGs, inspect the family and individual reading-size images, and verify the actual page in Firefox before pushing. Keep review files outside the public repository.

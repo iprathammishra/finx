@@ -25,3 +25,11 @@ html{color-scheme:light}body{max-width:1320px;margin:0 auto;padding:26px 24px 60
 .wide-photo{max-width:1000px}.question{max-width:1000px;padding-bottom:12px;border-bottom:1px solid #ddd}pre{overflow:auto;background:#fafafa;padding:16px}details summary{font-weight:500}details p{max-width:1150px}
 
 .brand{display:inline-flex;align-items:center;gap:9px;color:inherit;text-decoration:none}.brand img{flex:none}.eyebrow .brand{font-size:15px;color:#222}.editorial-sketch{max-width:760px;margin:28px 0}.editorial-sketch figcaption{max-width:680px}
+
+/* Dense diagrams keep readable labels; only the drawing scrolls on phones. */
+.diagram-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;padding:4px 0 10px}
+.diagram-scroll img{display:block;width:760px;max-width:none;height:auto}
+.diagram-scroll:focus-visible{outline:1px solid #666;outline-offset:3px}
+.diagram-hint{display:none}
+@media(max-width:800px){.diagram-scroll img{width:620px}.diagram-hint{display:inline}}
+@media print{.diagram-scroll{overflow:visible}.diagram-scroll img{width:100%;max-width:100%}.diagram-hint{display:none}}
